@@ -1,6 +1,7 @@
 function hmm() {
 cat <<EOF
 Invoke ". build/envsetup.sh" from your shell to add the following functions to your environment:
+- saber:   Brings up optimiazation menu. Click to select.
 - lunch:   lunch <product_name>-<build_variant>
 - tapas:   tapas [<App1> <App2> ...] [arm|x86|mips|armv5|arm64|x86_64|mips64] [eng|userdebug|user]
 - croot:   Changes directory to the top of the tree.
@@ -674,16 +675,15 @@ function tapas()
 
 function saber()
 {
-    echo "SaberMod Optimization menu... pick your combo:"
 
-cmd=(dialog --separate-output --checklist "SaberMod Optimization menu, click to check a box" 22 76 16)
+cmd=(dialog --separate-output --checklist "SaberMod Optimization menu, click a box to check it off" 22 76 16)
 options=(1 "Use Legacy GCC (for compatibility)" off
          2 "Use -O3 GCC Optimizations" off
          3 "Disable Graphite (for debuging)" off
          4 "Use Krait Optimizations" off
 	 5 "Use GCC Optimizations" off
 	 6 "Use Loop Nesting Optimizations" off
-	 7 "Use Clang (for debugging)" off)
+	 7 "Enable Multithreading Support" off)
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 for choice in $choices
 do
@@ -713,8 +713,8 @@ do
 	    export FLOOP_NEST_OPTIMIZE=true
             ;;
         7)
-            echo "Clang enabled :("
-	    export USE_CLANG=true
+            echo "Multithreading Support Enabled!"
+	    export ENABLE_PTHREAD=true
             ;;
     esac
 done
