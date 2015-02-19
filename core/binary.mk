@@ -113,33 +113,9 @@ endif
 # limitations under the License.
 ##########################################################################
 
-# Disable Clang for a list of modules
-ifneq ($(strip $(USE_CLANG)),true)
-  include $(BUILD_SYSTEM)/noclang.mk
-endif
-
 # Add pthread support for non-Clang modules
-#ifdef ($(strip $(ENABLE_PTHREAD)),true)
-#  ifneq ($(strip $(LOCAL_CLANG)),true)
-    include $(BUILD_SYSTEM)/pthread.mk
-#  endif
-#endif
-
-# Add some flags for krait
-#ifeq ($(strip $(USE_KRAIT)),true)
-  ifneq ($(strip $(LOCAL_IS_HOST_MODULE)),true)
-   include $(BUILD_SYSTEM)/krait.mk
-  endif
-#endif
-
-# Add -O3 Optimizations
-#ifeq ($(strip $(O3_OPTIMIZATIONS)),true)
-  include $(BUILD_SYSTEM)/O3.mk
-#endif
-
-# Disable Clang for a list of modules
-ifneq ($(strip $(USE_CLANG)),true)
-  include $(BUILD_SYSTEM)/noclang.mk
+ifdef ($(strip $(ENABLE_PTHREAD)),true)
+  include $(BUILD_SYSTEM)/pthread.mk
 endif
 
 # Add some flags for krait
@@ -147,6 +123,11 @@ ifeq ($(strip $(USE_KRAIT)),true)
   ifneq ($(strip $(LOCAL_IS_HOST_MODULE)),true)
    include $(BUILD_SYSTEM)/krait.mk
   endif
+endif
+
+# Add -O3 Optimizations
+ifeq ($(strip $(O3_OPTIMIZATIONS)),true)
+  include $(BUILD_SYSTEM)/O3.mk
 endif
 
 # Add some extra GCC pizzaz
